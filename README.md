@@ -34,7 +34,7 @@
 
 <p>I have designed MCP-NG with a focus on modularity and scalability. The core of the system is the <strong>Main MCP Server</strong>, which acts as a central hub for the various tool servers. Client applications, such as chatbots or other autonomous agents, communicate with the Main MCP Server to access the available tools via either gRPC or HTTP/REST.</p>
 
-<pre><code>
+```
 graph TD
     subgraph "Client Applications"
         A[gRPC Client]
@@ -57,7 +57,7 @@ graph TD
     end
 
     style B fill:#f9f,stroke:#333,stroke-width:2px
-</code></pre>
+```
 
 <h3>Key Components</h3>
 
@@ -230,7 +230,7 @@ cd MCP-NG</code></pre>
 
 <p>MCP-NG is designed to work with large language models (LLMs) using the ReAct (Reason and Act) pattern. This allows an LLM to intelligently select and use the available tools to accomplish a given task.</p>
 
-<pre><code>
+```
 sequenceDiagram
     participant User
     participant LLM
@@ -249,6 +249,6 @@ sequenceDiagram
     "MCP Server (gRPC/HTTP)">LLM: Observation (tool result)
     
     LLM->>User: Final Answer
-</code></pre>
+```
 
 For more information on how to integrate MCP-NG with an LLM and use the ReAct pattern, please see the [Integration Guide](docs/integration_guide.md). List of available tools
