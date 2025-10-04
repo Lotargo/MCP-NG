@@ -101,69 +101,19 @@ graph TD
 </code></pre>
 
 <h2>Getting Started</h2>
-
+<p>The MCP-NG project supports three primary environments: via Docker, natively on Windows, and natively on Linux/WSL. The recommended and easiest method is using Docker.</p>
 <h3>1. Running with Docker (Recommended)</h3>
-
-<p>Thanks to Docker, you can build and run the entire MCP-NG ecosystem, including the main server and all tools, with a single command. This is the easiest and most reliable way to get started.</p>
-
+<p>Thanks to Docker, you can build and run the entire MCP-NG ecosystem, including the main server and all tools, with a single command. This method ensures an identical environment for both development and deployment.</p>
 <ol>
-<li><strong>Ensure Docker is running on your machine.</strong></li>
+<li><strong>Ensure Docker and Docker Compose are installed and running.</strong></li>
 <li>From the root of the project directory, run the following command:</li>
 </ol>
-
 <pre><code>docker-compose up --build -d</code></pre>
-
-<p>This command will:</p>
-<ul>
-<li>Build the multi-stage Docker image, which compiles all Go binaries and installs all Python dependencies.</li>
-<li>Start the container in detached mode (<code>-d</code>).</li>
-<li>The server will be available on <code>grpc://localhost:8090</code> and <code>http://localhost:8002</code>.</li>
-<li>The tools directory (<code>./MCP-NG/tools</code>) is mounted as a volume, so you can add or modify tools without rebuilding the image.</li>
-</ul>
-
+<p>This command will build a multi-stage Docker image that compiles all Go binaries, installs all Python dependencies, and starts the container in the background. The server will be available at <code>grpc://localhost:8090</code> and <code>http://localhost:8002</code>.</p>
 <p>To stop the services, run <code>docker-compose down</code>.</p>
-
-<h3>2. Manual Setup on Linux / WSL</h3>
-
-<p>If you prefer to run the server without Docker in a Unix-like environment, follow these steps. You will need to have Go, Python, and Protocol Buffers installed.</p>
-
-<h4>a. Clone the Repository</h4>
-
-<pre><code>git clone https://github.com/Lotargo/MCP-NG.git
-cd MCP-NG</code></pre>
-
-<h4>b. Install Dependencies</h4>
-
-<p><strong>Go:</strong></p>
-
-<p>From the project root, set up the Workspace and download dependencies for all modules.</p>
-
-<pre><code>go work init
-go work use ./MCP-NG/server
-go work use ./MCP-NG/tools/go/...
-go mod tidy -C ./MCP-NG/server
-# ... and so on for each Go tool</code></pre>
-
-<p><strong>Python:</strong></p>
-
-<p>Create and activate a virtual environment, then install dependencies.</p>
-
-<pre><code>python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements_for_linux.txt</code></pre>
-
-<h4>c. Run the Server</h4>
-
-<p>The server must be run from the project root directory. The main server will automatically discover and launch all tools.</p>
-
-<pre><code>go run ./MCP-NG/server/cmd/server/main.go</code></pre>
-
-<h3>3. Manual Setup on Windows (Native)</h3>
-
-<p>This guide is for running the project natively on Windows without using WSL. This approach provides maximum performance and stability in a Windows environment.</p>
-
-<h4>a. Install Required Software</h4>
-
+<h3>2. Manual Setup on Windows (Native)</h3>
+<p>This guide is for running the project directly on Windows without using WSL. This approach provides maximum performance for local development.</p>
+<h4>a. Install Required Software (One-time setup)</h4>
 <ul>
 <li><strong>Go:</strong> Download and install Go from the official website (<a href="https://go.dev">go.dev</a>).</li>
 <li><strong>Python:</strong> Download and install Python (<a href="https://python.org">python.org</a>). During installation, make sure to check "Add Python to PATH".</li>
@@ -172,57 +122,60 @@ pip install -r requirements_for_linux.txt</code></pre>
 <ul>
 <li>Install MSYS2 from <a href="https://msys2.org">msys2.org</a>.</li>
 <li>Run the MSYS2 MINGW64 terminal and execute <code>pacman -Syu</code>, then <code>pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain</code>.</li>
-<li>Add <code>C:\msys64\ucrt64\bin</code> to your system PATH variable.</li>
+<li>Add the path <code>C:\msys64\ucrt64\bin</code> to your system's PATH environment variable.</li>
 </ul>
 </li>
 </ul>
-
 <h4>b. Clone the Repository</h4>
-
 <pre><code>git clone https://github.com/Lotargo/MCP-NG.git
 cd MCP-NG</code></pre>
-
 <h4>c. Automatic Environment Setup</h4>
-
-<p>This step is automated using a special PowerShell script. It will create a virtual environment, install all dependencies, compile all Go applications (including the main server) into the <code>bin</code> folder, and configure Windows Firewall rules.</p>
-
+<p>This step is automated using a PowerShell script. It will create a virtual environment, install all dependencies, compile all Go applications (including the main server) into a <code>bin</code> folder, and automatically configure Windows Firewall rules.</p>
 <ol>
-<li>Open PowerShell terminal <strong>as Administrator</strong>.</li>
+<li>Open a PowerShell terminal <strong>as Administrator</strong>.</li>
 <li>Navigate to the project root folder.</li>
 <li>Create a virtual environment (done once):</li>
 </ol>
-
 <pre><code>python -m venv .venv</code></pre>
-
 <ol start="4">
 <li>Run the automatic setup script:</li>
 </ol>
-
 <pre><code>PowerShell -ExecutionPolicy Bypass -File .\install_deps.ps1</code></pre>
-
-<p>This script will prepare everything necessary for running.</p>
-
+<p>This script prepares everything needed for the launch. Re-run it after pulling updates from Git that change dependencies or add new tools.</p>
 <h4>d. Run the Server</h4>
-
 <p>After the <code>install_deps.ps1</code> script completes, your project is ready to run.</p>
-
 <ol>
-<li>Open a new, regular PowerShell terminal (not as administrator).</li>
+<li>Open a <strong>new, regular</strong> PowerShell terminal (not as an administrator).</li>
 <li>Navigate to the project root folder.</li>
 <li>Execute the command to run the compiled server:</li>
 </ol>
-
 <pre><code>.\bin\server.exe</code></pre>
-
 <p>The server will start and automatically launch all compiled microservices.</p>
-
-<h3>Note on R&amp;D Modules</h3>
-
-<p>By default, the server does not launch the resource-intensive Python-based ML tools (<code>hybrid_search</code> and others). I have designated these as <strong>R&amp;D (Research and Development)</strong> modules to ensure a fast and stable startup for the core system. Their behavior can be modified in the server's source code.</p>
-
+<h3>3. Manual Setup on Linux / WSL</h3>
+<p>The process is similar to the Windows setup and follows the "build first, then run" principle.</p>
+<h4>a. Install Required Software</h4>
+<p>Install Go, Python 3.11+, Git, and GCC (e.g., via <code>sudo apt install build-essential</code>).</p>
+<h4>b. Clone and Install Dependencies</h4>
+<pre><code>git clone https://github.com/Lotargo/MCP-NG.git
+cd MCP-NG
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements_for_linux.txt</code></pre>
+<h4>c. Build the Project</h4>
+<p>Compile the main server and all Go tools into the <code>bin</code> directory.</p>
+<pre><code>mkdir bin
+go build -o ./bin/server ./MCP-NG/server/cmd/server
+# Repeat for each Go tool
+go build -o ./bin/api_caller ./MCP-NG/tools/go/api_caller
+# ...and so on
+</code></pre>
+<h4>d. Run the Server</h4>
+<p>Run the compiled binary.</p>
+<pre><code>./bin/server</code></pre>
+<h3>Note on R&D Modules</h3>
+<p>By default, the server does not launch the resource-intensive Python-based ML tools (<code>hybrid_search</code> and others). I have designated these as <strong>R&D (Research and Development)</strong> modules to ensure a fast and stable startup for the core system. Their behavior can be modified in the server's source code.</p>
 <h3>Tool Configuration</h3>
-
-<p>Each tool has its own <code>config.json</code> file for configuration. For local development on Windows, the <code>install_deps.ps1</code> script automatically compiles all Go tools, and the main server runs them as executables. For development on Linux/WSL or for Docker builds, ensure that the commands in <code>config.json</code> match your environment (<code>go run .</code>, <code>python server.py</code>, or the binary name).</p>
+<p>Each tool has its own <code>config.json</code> file. After all our changes, the configuration is now universal. It only specifies the name of the executable (e.g., <code>"command": ["api_caller"]</code>) or the script (<code>"command": ["server.py"]</code>). The main server now intelligently constructs the correct paths to run them based on the operating system.</p>
 
 <p>Please refer to the detailed documentation for each tool in the <code>docs/tools</code> directory for specific configuration instructions.</p>
 
