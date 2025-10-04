@@ -235,13 +235,16 @@ sequenceDiagram
 
     User->>LLM: Prompt
     LLM->>"MCP Server (gRPC/HTTP)": ListTools() via GET /v1/tools
+    "MCP Server (gRPC/HTTP)"-->>LLM: List of available tools
+    
+    LLM->>LLM: Reason which tool to use
+    
+    LLM->>"MCP Server (gRPC/HTTP)": RunTool(tool_name, args) via POST /v1/tools:run
+    "MCP Server (gRPC/HTTP)"->>Tools: Execute tool via gRPC
+    Tools-->>"MCP Server (gRPC/HTTP)": Tool output
     "MCP Server (gRPC/HTTP)"-->>LLM: Observation (tool result)
+    
     LLM->>User: Final Answer
 ```
 
 For more information on how to integrate MCP-NG with an LLM and use the ReAct pattern, please see the [Integration Guide](docs/integration_guide.md). List of available tools
-    LLM->>LLM: Reason which tool to use
-    LLM->>"MCP Server (gRPC/HTTP)": RunTool(tool_name, args) via POST /v1/tools:run
-    "MCP Server (gRPC/HTTP)"->>Tools: Execute tool via gRPC
-    Tools-->>"MCP Server (gRPC/HTTP)": Tool output
-    "MCP Server (gRPC/HTTP)"-->>LLM:
