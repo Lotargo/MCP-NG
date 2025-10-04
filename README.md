@@ -56,7 +56,7 @@ graph TD
         F
     end
 
-    style B fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#ffa500,stroke:#333,stroke-width:2px,color:#000
 ```
 
 <h3>Key Components</h3>
@@ -239,14 +239,14 @@ sequenceDiagram
 
     User->>LLM: Prompt
     LLM->>"MCP Server (gRPC/HTTP)": ListTools() via GET /v1/tools
-    "MCP Server (gRPC/HTTP)">LLM: List of available tools
+    "MCP Server (gRPC/HTTP)"-->>LLM: List of available tools
     
     LLM->>LLM: Reason which tool to use
     
     LLM->>"MCP Server (gRPC/HTTP)": RunTool(tool_name, args) via POST /v1/tools:run
     "MCP Server (gRPC/HTTP)"->>Tools: Execute tool via gRPC
-    Tools>"MCP Server (gRPC/HTTP)": Tool output
-    "MCP Server (gRPC/HTTP)">LLM: Observation (tool result)
+    Tools-->>"MCP Server (gRPC/HTTP)": Tool output
+    "MCP Server (gRPC/HTTP)"-->>LLM: Observation (tool result)
     
     LLM->>User: Final Answer
 ```
