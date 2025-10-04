@@ -165,9 +165,9 @@ pip install -r requirements_for_linux.txt</code></pre>
 <h4>a. Установка необходимого ПО</h4>
 
 <ul>
-<li><strong>Go:</strong> Скачайте и установите Go с официального сайта (<a href="https://go.dev">go.dev</a>).</li>
-<li><strong>Python:</strong> Скачайте и установите Python (<a href="https://python.org">python.org</a>). Во время установки обязательно поставьте галочку "Add Python to PATH".</li>
-<li><strong>Git for Windows:</strong> Установите Git (<a href="https://git-scm.com">git-scm.com</a>).</li>
+<li><strong>Go:</strong> Скачайте и установите Go с официального сайта <a href="https://go.dev">go.dev</a>.</li>
+<li><strong>Python:</strong> Скачайте и установите Python <a href="https://python.org">python.org</a>. Во время установки обязательно поставьте галочку "Add Python to PATH".</li>
+<li><strong>Git for Windows:</strong> Установите Git <a href="https://git-scm.com">git-scm.com</a>.</li>
 <li><strong>MinGW (C/C++ компилятор):</strong> Необходим для некоторых Go-пакетов (например, <code>go-sqlite3</code>).
 <ul>
 <li>Установите MSYS2 с <a href="https://msys2.org">msys2.org</a>.</li>
