@@ -34,20 +34,20 @@
 
 <p>I have designed MCP-NG with a focus on modularity and scalability. The core of the system is the <strong>Main MCP Server</strong>, which acts as a central hub for the various tool servers. Client applications, such as chatbots or other autonomous agents, communicate with the Main MCP Server to access the available tools via either gRPC or HTTP/REST.</p>
 
-<pre><code>
+```mermaid
 graph TD
     subgraph "Client Applications"
         A[gRPC Client]
         H[HTTP/REST Client]
     end
 
-    A |gRPC Request on port 8090| B(Main MCP Server);
-    H |HTTP/REST Request on port 8002| B;
+    A -->|gRPC Request on port 8090| B(Main MCP Server);
+    H -->|HTTP/REST Request on port 8002| B;
 
-    B |gRPC Proxy| C{Tool 1 Go};
-    B |gRPC Proxy| D{Tool 2 Go};
-    B |gRPC Proxy| E{Tool 3 Python};
-    B |gRPC Proxy| F[Human Bridge];
+    B -->|gRPC Proxy| C{Tool 1 Go};
+    B -->|gRPC Proxy| D{Tool 2 Go};
+    B -->|gRPC Proxy| E{Tool 3 Python};
+    B -->|gRPC Proxy| F[Human Bridge];
 
     subgraph "Tool Servers"
         C
@@ -56,8 +56,8 @@ graph TD
         F
     end
 
-    style B fill:#f9f,stroke:#333,stroke-width:2px
-</code></pre>
+    style B fill:#ffa500,stroke:#333,stroke-width:2px,color:#000
+```
 
 <h3>Key Components</h3>
 
@@ -230,7 +230,7 @@ cd MCP-NG</code></pre>
 
 <p>MCP-NG is designed to work with large language models (LLMs) using the ReAct (Reason and Act) pattern. This allows an LLM to intelligently select and use the available tools to accomplish a given task.</p>
 
-<pre><code>
+```mermaid
 sequenceDiagram
     participant User
     participant LLM
@@ -239,16 +239,16 @@ sequenceDiagram
 
     User->>LLM: Prompt
     LLM->>"MCP Server (gRPC/HTTP)": ListTools() via GET /v1/tools
-    "MCP Server (gRPC/HTTP)">LLM: List of available tools
+    "MCP Server (gRPC/HTTP)"-->>LLM: List of available tools
     
     LLM->>LLM: Reason which tool to use
     
     LLM->>"MCP Server (gRPC/HTTP)": RunTool(tool_name, args) via POST /v1/tools:run
     "MCP Server (gRPC/HTTP)"->>Tools: Execute tool via gRPC
-    Tools>"MCP Server (gRPC/HTTP)": Tool output
-    "MCP Server (gRPC/HTTP)">LLM: Observation (tool result)
+    Tools-->>"MCP Server (gRPC/HTTP)": Tool output
+    "MCP Server (gRPC/HTTP)"-->>LLM: Observation (tool result)
     
     LLM->>User: Final Answer
-</code></pre>
+```
 
 For more information on how to integrate MCP-NG with an LLM and use the ReAct pattern, please see the [Integration Guide](docs/integration_guide.md). List of available tools
