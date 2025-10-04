@@ -36,32 +36,26 @@
 
 ```mermaid
 graph TD
-    subgraph "Клиентские приложения (Client Applications)"
+    subgraph "Client Applications"
         A[gRPC Client]
         H[HTTP/REST Client]
     end
 
-    subgraph "Основной сервер (Core)"
-         B(Main MCP Server)
+    A |gRPC Request on port 8090| B(Main MCP Server);
+    H |HTTP/REST Request on port 8002| B;
+
+    B |gRPC Proxy| C{Tool 1 Go};
+    B |gRPC Proxy| D{Tool 2 Go};
+    B |gRPC Proxy| E{Tool 3 Python};
+    B |gRPC Proxy| F[Human Bridge];
+
+    subgraph "Tool Servers"
+        C
+        D
+        E
+        F
     end
 
-    subgraph "Серверы инструментов (Tool Servers)"
-        C[Tool 1 Go]
-        D[Tool 2 Go]
-        E[Tool 3 Python]
-        F[Human Bridge]
-    end
-
-    %% Определение связей
-    A -- "gRPC Request on port 8090" --> B;
-    H -- "HTTP/REST Request on port 8002" --> B;
-
-    B -- "gRPC Proxy" --> C;
-    B -- "gRPC Proxy" --> D;
-    B -- "gRPC Proxy" --> E;
-    B -- "gRPC Proxy" --> F;
-
-    %% Стилизация
     style B fill:#f9f,stroke:#333,stroke-width:2px
 ```
 
@@ -236,7 +230,7 @@ cd MCP-NG</code></pre>
 
 <p>MCP-NG is designed to work with large language models (LLMs) using the ReAct (Reason and Act) pattern. This allows an LLM to intelligently select and use the available tools to accomplish a given task.</p>
 
-```
+```mermaid
 sequenceDiagram
     participant User
     participant LLM
