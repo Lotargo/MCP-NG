@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  mcp-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: mcp_server
+    ports:
+      # Expose the gRPC port (default 8090) to the host machine
+      - "8090:8090"
+      # Expose the HTTP/REST port (default 8002) to the host machine
+      - "8002:8002"
+    volumes:
+      # Mount the tools directory from the host into the container.
+      # This allows you to add or modify tools (both Python and Go)
+      # without rebuilding the entire container.
+      # Note: For new Go tools, you would need to compile them and
+      # place the binary in the corresponding mounted directory.
+      - ./MCP-NG/tools:/app/MCP-NG/tools
+    # It's good practice to set a restart policy
+    restart: unless-stopped
+    # The default command is already set in the Dockerfile,
+    # so we don't need to specify it here unless we want to override it.
+    # command: ["/app/bin/server"]

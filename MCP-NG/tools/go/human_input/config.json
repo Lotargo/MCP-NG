@@ -1,0 +1,8 @@
+{
+  "port": 50056,
+  "command": ["go", "run", "."],
+  "broker": {
+    "type": "websocket",
+    "address": "localhost:8080"
+  }
+}

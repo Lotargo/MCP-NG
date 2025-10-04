@@ -1,0 +1,140 @@
+syntax = "proto3";
+
+package mcp;
+
+// The go_package option specifies the import path for the generated Go code.
+option go_package = "mcp-ng/server/pkg/mcp";
+
+// Standard Google types are imported to handle JSON-like structures and values.
+import "google/protobuf/struct.proto";
+// Annotations are imported to define HTTP mappings for the gRPC-Gateway.
+import "google/api/annotations.proto";
+
+// ===================================================================
+// Services
+// ===================================================================
+
+// MCP (Master Control Program) is the primary service for orchestrating tools.
+service MCP {
+  // Returns a list of all available and healthy tools.
+  rpc ListTools(ListToolsRequest) returns (ListToolsResponse) {
+    option (google.api.http) = {
+      // SYNTHESIS: Using the better, versioned path from Variant 1
+      get: "/v1/tools"
+    };
+  }
+
+  // *** KEY CHANGE: Executes a tool as part of an async-ready task. ***
+  rpc ExecuteTool(ExecuteToolRequest) returns (ExecuteToolResponse) {
+    option (google.api.http) = {
+      // SYNTHESIS: Using the better, versioned path from Variant 1
+      // Note the path change from "/v1/tools:run" to reflect the new RPC name.
+      post: "/v1/tools:execute"
+      body: "*"
+    };
+  }
+
+  // Allows a human operator to provide a response for a pending task.
+  rpc ProvideHumanInput(ProvideHumanInputRequest) returns (ProvideHumanInputResponse) {
+    option (google.api.http) = {
+      // SYNTHESIS: Using the better, versioned path from Variant 1
+      post: "/v1/human-input:provide"
+      body: "*"
+    };
+  }
+
+  // Polls for the status and result of a human input task.
+  rpc GetHumanInput(GetHumanInputRequest) returns (GetHumanInputResponse) {
+    option (google.api.http) = {
+      // SYNTHESIS: Using the better, versioned path from Variant 1
+      get: "/v1/human-input/{task_id}"
+    };
+  }
+}
+
+// Tool defines the service contract that each individual tool must implement.
+service Tool {
+  // Returns the tool's description, including its name, purpose, and parameters.
+  rpc GetDescription(GetDescriptionRequest) returns (ToolDescription);
+  // Executes the tool's primary logic. This is for internal communication between MCP and the tool.
+  rpc Run(ToolRunRequest) returns (ToolRunResponse);
+}
+
+// ===================================================================
+// Core Service Messages
+// ===================================================================
+
+message ListToolsRequest {}
+
+message ListToolsResponse {
+  repeated ToolDescription tools = 1;
+}
+
+message GetDescriptionRequest {}
+
+message ToolDescription {
+  string name = 1;
+  string description = 2;
+  ToolParameters parameters = 3;
+}
+
+message ToolParameters {
+  string type = 1; // Typically "object"
+  map<string, ToolParameter> properties = 2;
+  repeated string required = 3;
+}
+
+message ToolParameter {
+  string type = 1; // JSON schema types: "string", "number", etc.
+  string description = 2;
+}
+
+// Internal request from MCP to a specific Tool.
+message ToolRunRequest {
+  string name = 1;
+  google.protobuf.Struct arguments = 2;
+}
+
+// Internal response from a specific Tool to MCP.
+message ToolRunResponse {
+  google.protobuf.Value result = 1;
+  string error = 2;
+}
+
+// *** KEY CHANGE: New messages for the async-ready task architecture. ***
+
+// Request from an external client to the MCP to execute a tool.
+message ExecuteToolRequest {
+  string task_id = 1;
+  string tool_name = 2;
+  google.protobuf.Struct arguments = 3;
+}
+
+// Response from the MCP to an external client after executing a tool.
+message ExecuteToolResponse {
+  string task_id = 1;
+  google.protobuf.Struct result = 2;
+}
+
+
+// ===================================================================
+// Human Interaction Messages
+// ===================================================================
+
+message ProvideHumanInputRequest {
+  string task_id = 1;
+  google.protobuf.Value response = 2;
+}
+
+message ProvideHumanInputResponse {
+  string status = 1; // e.g., "received"
+}
+
+message GetHumanInputRequest {
+  string task_id = 1;
+}
+
+message GetHumanInputResponse {
+  string status = 1; // e.g., "pending", "completed"
+  google.protobuf.Value response = 2;
+}

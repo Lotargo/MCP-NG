@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.venv/
+
+# macOS
+.DS_Store
+
+# Логи и временные файлы
+*.log
+/server.log
+/server_run.log
+/calculator.log
+/MCP-NG/tools/go/calculator/calculator.log
+/MCP-NG/server/server.log
+/MCP-NG/server/server_run.log
+
+# Папки со средами и зависимостями
+/env/
+/MCP-NG/env/
+third_party/
+
+# IDE и редакторы
+.vscode/
+
+# Скомпилированные артефакты Windows
+# Исключаем все .exe файлы в папках с Go-инструментами
+/MCP-NG/tools/go/**/*.exe

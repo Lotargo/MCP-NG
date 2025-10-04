@@ -1,0 +1,8 @@
+{
+  "port": 50059,
+  "command": ["go", "run", "."],
+  "ozon_api": {
+    "client_id": "your-client-id",
+    "api_key": "your-api-key"
+  }
+}
