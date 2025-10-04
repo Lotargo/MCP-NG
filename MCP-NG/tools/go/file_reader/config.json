@@ -1,4 +1,6 @@
 {
-  "port": 50054,
-  "command": ["go", "run", "."]
+    "port":  50054,
+    "command":  [
+                    "file_reader"
+                ]
 }

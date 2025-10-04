@@ -1,7 +1,9 @@
 {
-  "port": 50060,
-  "command": ["go", "run", "."],
-  "tavily_api": {
-    "api_key": "your-tavily-api-key"
-  }
+    "port":  50060,
+    "command":  [
+                    "web_search"
+                ],
+    "tavily_api":  {
+                       "api_key":  "your-tavily-api-key"
+                   }
 }

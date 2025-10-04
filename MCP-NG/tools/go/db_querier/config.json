@@ -1,4 +1,6 @@
 {
-  "port": 50053,
-  "command": ["go", "run", "."]
+    "port":  50053,
+    "command":  [
+                    "db_querier"
+                ]
 }

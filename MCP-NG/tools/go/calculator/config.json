@@ -1,4 +1,6 @@
 {
-  "port": 50052,
-  "command": ["go", "run", "."]
+    "port":  50052,
+    "command":  [
+                    "calculator"
+                ]
 }

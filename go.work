@@ -1,20 +1,20 @@
-go 1.24.4 // Можете оставить здесь вашу версию
+go 1.24.4
 
 use (
-    // Главный сервер
-    ./MCP-NG/server
+	./MCP-NG/human_bridge
+	// Главный сервер
+	./MCP-NG/server
 
-    // Инструменты-микросервисы
-    ./MCP-NG/tools/go/api_caller
-    ./MCP-NG/tools/go/calculator
-    ./MCP-NG/tools/go/db_querier
-    ./MCP-NG/tools/go/file_reader
-    ./MCP-NG/tools/go/file_writer
-    ./MCP-NG/tools/go/human_input
-    ./MCP-NG/tools/go/list_directory
-    ./MCP-NG/tools/go/log_notifier
-    ./MCP-NG/tools/go/ozon
-    ./MCP-NG/tools/go/web_search
-    ./MCP-NG/tools/go/wildberries
-    ./MCP-NG/human_bridge
+	// Инструменты-микросервисы
+	./MCP-NG/tools/go/api_caller
+	./MCP-NG/tools/go/calculator
+	./MCP-NG/tools/go/db_querier
+	./MCP-NG/tools/go/file_reader
+	./MCP-NG/tools/go/file_writer
+	./MCP-NG/tools/go/human_input
+	./MCP-NG/tools/go/list_directory
+	./MCP-NG/tools/go/log_notifier
+	./MCP-NG/tools/go/ozon
+	./MCP-NG/tools/go/web_search
+	./MCP-NG/tools/go/wildberries
 )

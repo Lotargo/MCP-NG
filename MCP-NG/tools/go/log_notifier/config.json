@@ -1,4 +1,6 @@
 {
-  "port": 50058,
-  "command": ["go", "run", "."]
+    "port":  50058,
+    "command":  [
+                    "log_notifier"
+                ]
 }

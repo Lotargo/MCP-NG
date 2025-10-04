@@ -1,7 +1,9 @@
 {
-  "port": 50061,
-  "command": ["go", "run", "."],
-  "wildberries_api": {
-    "api_key": "your-wildberries-api-key"
-  }
+    "port":  50061,
+    "command":  [
+                    "wildberries"
+                ],
+    "wildberries_api":  {
+                            "api_key":  "your-wildberries-api-key"
+                        }
 }

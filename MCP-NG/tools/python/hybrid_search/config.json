@@ -1,4 +1,6 @@
 {
-  "port": 50072,
-  "command": ["python", "server.py"]
+    "port":  50072,
+    "command":  [
+                    "server.py"
+                ]
 }

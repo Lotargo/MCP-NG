@@ -12,13 +12,17 @@ import (
 	"os/exec"
 	"os/signal"
 	"path/filepath"
+	"runtime"
+	"strings"
 	"sync"
 	"syscall"
 	"time"
 
-	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"github.com/rs/cors"
 	pb "mcp-ng/server/pkg/mcp"
+
+	grpcRuntime "github.com/grpc-ecosystem/grpc-gateway/v2/runtime" // <-- ИЗМЕНЕНИЕ 1
+	"github.com/rs/cors"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/credentials/insecure"
@@ -146,10 +150,41 @@ func (s *server) discoverAndRunTools(projectRoot string) {
 					return nil
 				}
 				if len(config.Command) > 0 {
-					cmd := exec.Command(config.Command[0], config.Command[1:]...)
-					cmd.Dir = path
+					executable := config.Command[0]
+					args := config.Command[1:]
+
+					// Проверяем, является ли команда простым именем (без пути)
+					isSimpleCommand := !strings.ContainsAny(executable, `\/`)
+
+					// Если это простой вызов и не 'go' или 'python', строим абсолютный путь
+					if isSimpleCommand && executable != "go" && executable != "python" && executable != "python3" {
+						// Это наш скомпилированный Go-инструмент. Строим к нему абсолютный путь.
+						executable = filepath.Join(projectRoot, "bin", executable)
+						if runtime.GOOS == "windows" && !strings.HasSuffix(executable, ".exe") {
+							executable += ".exe"
+						}
+					}
+
+					// Специальная обработка для Python, чтобы всегда использовать venv
+					isPythonTool := strings.Contains(filepath.ToSlash(path), "/tools/python/")
+					if isPythonTool {
+						pythonExe := filepath.Join(projectRoot, ".venv", "Scripts", "python.exe")
+						// Для не-Windows систем путь будет другим
+						if runtime.GOOS != "windows" {
+							pythonExe = filepath.Join(projectRoot, ".venv", "bin", "python")
+						}
+
+						// Пересобираем команду: python.exe script.py
+						fullScriptPath := filepath.Join(path, config.Command[0])
+						args = []string{fullScriptPath}
+						executable = pythonExe
+					}
+
+					cmd := exec.Command(executable, args...)
+					cmd.Dir = path // Рабочая директория остается папкой инструмента, чтобы он нашел свой config.json
 					cmd.Stdout = os.Stdout
 					cmd.Stderr = os.Stderr
+					logger.Info("ATTEMPTING TO RUN", "executable", cmd.Path, "args", cmd.Args, "dir", cmd.Dir)
 					if err := cmd.Start(); err != nil {
 						logger.Error("Failed to start tool", "tool", toolName, "error", err)
 						return nil
@@ -376,8 +411,24 @@ func main() {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
-	// When running the server directly, the project root is the current working directory (".").
-	mcpServer := newServer(".")
+	// Determine project root dynamically. This makes the server runnable from anywhere.
+	ex, err := os.Executable()
+	if err != nil {
+		logger.Error("Failed to get executable path", "error", err)
+		os.Exit(1)
+	}
+	executablePath := filepath.Dir(ex)
+
+	// This logic assumes a specific directory structure relative to the executable.
+	// It will work for both 'go run' (which creates a temp binary) and the compiled binary in /bin.
+	projectRoot, err := findProjectRoot(executablePath)
+	if err != nil {
+		logger.Error("Failed to find project root", "error", err, "start_path", executablePath)
+		os.Exit(1)
+	}
+	logger.Info("Determined project root", "path", projectRoot)
+
+	mcpServer := newServer(projectRoot)
 
 	var wg sync.WaitGroup
 
@@ -403,7 +454,7 @@ func main() {
 
 	// --- Start gRPC-Gateway (HTTP Server) ---
 	httpAddr := fmt.Sprintf(":%d", config.HttpPort)
-	grpcGatewayMux := runtime.NewServeMux()
+	grpcGatewayMux := grpcRuntime.NewServeMux() // <-- ИЗМЕНЕНИЕ 2
 
 	conn, err := grpc.DialContext(
 		ctx,
@@ -461,4 +512,23 @@ func main() {
 
 	wg.Wait()
 	logger.Info("All servers stopped. Exiting.")
+}
+
+// findProjectRoot searches upwards from a given path for a directory containing 'go.work'.
+func findProjectRoot(startPath string) (string, error) {
+	dir := startPath
+	for {
+		// Check if go.work exists in the current directory
+		if _, err := os.Stat(filepath.Join(dir, "go.work")); err == nil {
+			return dir, nil
+		}
+
+		// Move up one directory
+		parentDir := filepath.Dir(dir)
+		if parentDir == dir {
+			// We've reached the root of the filesystem (e.g., "C:\" or "/") and haven't found it.
+			return "", fmt.Errorf("go.work file not found in any parent directory")
+		}
+		dir = parentDir
+	}
 }

@@ -56,17 +56,21 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
-# Copy Python dependency requirements
-COPY requirements.txt .
+# Copy Python dependency requirements for Linux
+COPY requirements_for_linux.txt .
 
 # Install Python packages
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements_for_linux.txt
 
 # Copy the entire project structure for context
 COPY MCP-NG/ ./MCP-NG/
 
 # Copy the compiled Go binaries from the builder stage
 COPY --from=builder /app/bin/ /app/bin/
+
+# --- ИЗМЕНЕНИЕ: ДОБАВЛЕНО ЗДЕСЬ ---
+# Устанавливаем PATH, чтобы главный сервер мог находить скомпилированные Go-инструменты
+ENV PATH="/app/bin:${PATH}"
 
 # Set the default command to start the main server
 CMD ["/app/bin/server"]

@@ -1,4 +1,6 @@
 {
-  "port": 50057,
-  "command": ["go", "run", "main.go"]
+    "port":  50057,
+    "command":  [
+                    "list_directory"
+                ]
 }

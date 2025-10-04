@@ -1,4 +1,6 @@
 {
-  "port": 50051,
-  "command": ["go", "run", "."]
+    "port":  50051,
+    "command":  [
+                    "api_caller"
+                ]
 }
