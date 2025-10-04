@@ -165,10 +165,10 @@ pip install -r requirements_for_linux.txt</code></pre>
 <h4>a. Install Required Software</h4>
 
 <ul>
-<li><strong>Go:</strong> Download and install Go from the official website (<a href="https://go.dev">go.dev</a>).</li>
-<li><strong>Python:</strong> Download and install Python (<a href="https://python.org">python.org</a>). During installation, make sure to check "Add Python to PATH".</li>
-<li><strong>Git for Windows:</strong> Install Git (<a href="https://git-scm.com">git-scm.com</a>).</li>
-<li><strong>MinGW (C/C++ compiler):</strong> Required for some Go packages (e.g., <code>go-sqlite3</code>).
+<li><strong>Go:</strong> Download and install Go from the official website <a href="https://go.dev">go.dev</a>.</li>
+<li><strong>Python:</strong> Download and install Python <a href="https://python.org">python.org</a>. During installation, make sure to check "Add Python to PATH".</li>
+<li><strong>Git for Windows:</strong> Install Git <a href="https://git-scm.com">git-scm.com</a>.</li>
+<li><strong>MinGW (C/C++ compiler):</strong> Required for some Go packages e.g., <code>go-sqlite3</code>.
 <ul>
 <li>Install MSYS2 from <a href="https://msys2.org">msys2.org</a>.</li>
 <li>Run the MSYS2 MINGW64 terminal and execute <code>pacman -Syu</code>, then <code>pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain</code>.</li>
