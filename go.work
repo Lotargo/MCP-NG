@@ -16,4 +16,5 @@ use (
     ./MCP-NG/tools/go/ozon
     ./MCP-NG/tools/go/web_search
     ./MCP-NG/tools/go/wildberries
+    ./MCP-NG/human_bridge
 )
