@@ -115,9 +115,9 @@ graph TD
 <p>Этот гайд предназначен для запуска проекта напрямую в Windows без использования WSL. Этот способ обеспечивает максимальную производительность для локальной разработки.</p>
 <h4>a. Установка необходимого ПО (выполняется один раз)</h4>
 <ul>
-<li><strong>Go:</strong> Скачайте и установите Go с официального сайта (<a href="https://go.dev">go.dev</a>).</li>
-<li><strong>Python:</strong> Скачайте и установите Python (<a href="https://python.org">python.org</a>). Во время установки обязательно поставьте галочку "Add Python to PATH".</li>
-<li><strong>Git for Windows:</strong> Установите Git (<a href="https://git-scm.com">git-scm.com</a>).</li>
+<li><strong>Go:</strong> Скачайте и установите Go с официального сайта <a href="https://go.dev">go.dev</a>.</li>
+<li><strong>Python:</strong> Скачайте и установите Python <a href="https://python.org">python.org</a>. Во время установки обязательно поставьте галочку "Add Python to PATH".</li>
+<li><strong>Git for Windows:</strong> Установите Git <a href="https://git-scm.com">git-scm.com</a>.</li>
 <li><strong>MinGW (C/C++ компилятор):</strong> Необходим для некоторых Go-пакетов (например, <code>go-sqlite3</code>).
 <ul>
 <li>Установите MSYS2 с <a href="https://msys2.org">msys2.org</a>.</li>
@@ -177,7 +177,7 @@ go build -o ./bin/api_caller ./MCP-NG/tools/go/api_caller
 <h3>Конфигурация инструментов</h3>
 <p>У каждого инструмента есть свой файл <code>config.json</code>. После всех наших изменений, конфигурация теперь универсальна. В ней указывается только имя исполняемого файла (например, <code>"command": ["api_caller"]</code>) или скрипта (<code>"command": ["server.py"]</code>). Главный сервер сам строит правильные пути для запуска в зависимости от операционной системы.</p>
 
-<p>Пожалуйста, обратитесь к подробной документации для каждого инструмента в каталоге <code>docs_ru/tools</code> для получения конкретных инструкций по настройке.</p>
+<p>Пожалуйста, обратитесь к подробной <a href= "https://github.com/Lotargo/MCP-NG/tree/main/docs_ru/tools">документации</a></li> для каждого инструмента для получения конкретных инструкций по настройке.</p>
 
 <h2>Рабочий процесс ReAct</h2>
 

@@ -115,10 +115,10 @@ graph TD
 <p>This guide is for running the project directly on Windows without using WSL. This approach provides maximum performance for local development.</p>
 <h4>a. Install Required Software (One-time setup)</h4>
 <ul>
-<li><strong>Go:</strong> Download and install Go from the official website (<a href="https://go.dev">go.dev</a>).</li>
-<li><strong>Python:</strong> Download and install Python (<a href="https://python.org">python.org</a>). During installation, make sure to check "Add Python to PATH".</li>
-<li><strong>Git for Windows:</strong> Install Git (<a href="https://git-scm.com">git-scm.com</a>).</li>
-<li><strong>MinGW (C/C++ compiler):</strong> Required for some Go packages (e.g., <code>go-sqlite3</code>).
+<li><strong>Go:</strong> Download and install Go from the official website <a href="https://go.dev">go.dev</a>.</li>
+<li><strong>Python:</strong> Download and install Python <a href="https://python.org">python.org</a>. During installation, make sure to check "Add Python to PATH".</li>
+<li><strong>Git for Windows:</strong> Install Git <a href="https://git-scm.com">git-scm.com</a>.</li>
+<li><strong>MinGW (C/C++ compiler):</strong> Required for some Go packages e.g., <code>go-sqlite3</code>.
 <ul>
 <li>Install MSYS2 from <a href="https://msys2.org">msys2.org</a>.</li>
 <li>Run the MSYS2 MINGW64 terminal and execute <code>pacman -Syu</code>, then <code>pacman -S --needed base-devel mingw-w64-ucrt-x86_64-toolchain</code>.</li>
@@ -177,7 +177,7 @@ go build -o ./bin/api_caller ./MCP-NG/tools/go/api_caller
 <h3>Tool Configuration</h3>
 <p>Each tool has its own <code>config.json</code> file. After all our changes, the configuration is now universal. It only specifies the name of the executable (e.g., <code>"command": ["api_caller"]</code>) or the script (<code>"command": ["server.py"]</code>). The main server now intelligently constructs the correct paths to run them based on the operating system.</p>
 
-<p>Please refer to the detailed documentation for each tool in the <code>docs/tools</code> directory for specific configuration instructions.</p>
+<p>Please refer to the detailed <a href= "https://github.com/Lotargo/MCP-NG-/tree/main/docs/tools">documentation</a></li> for each tool in the for specific configuration instructions.</p>
 
 <h2>ReAct Workflow</h2>
 
