@@ -41,13 +41,13 @@ graph TD
         H[HTTP/REST Client]
     end
 
-    A |gRPC Request on port 8090| B(Main MCP Server);
-    H |HTTP/REST Request on port 8002| B;
+    A -->|gRPC Request on port 8090| B(Main MCP Server);
+    H -->|HTTP/REST Request on port 8002| B;
 
-    B |gRPC Proxy| C{Tool 1 Go};
-    B |gRPC Proxy| D{Tool 2 Go};
-    B |gRPC Proxy| E{Tool 3 Python};
-    B |gRPC Proxy| F[Human Bridge];
+    B -->|gRPC Proxy| C{Tool 1 Go};
+    B -->|gRPC Proxy| D{Tool 2 Go};
+    B -->|gRPC Proxy| E{Tool 3 Python};
+    B -->|gRPC Proxy| F[Human Bridge];
 
     subgraph "Tool Servers"
         C
