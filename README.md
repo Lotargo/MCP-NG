@@ -224,7 +224,7 @@ cd MCP-NG</code></pre>
 
 <p>Each tool has its own <code>config.json</code> file for configuration. For local development on Windows, the <code>install_deps.ps1</code> script automatically compiles all Go tools, and the main server runs them as executables. For development on Linux/WSL or for Docker builds, ensure that the commands in <code>config.json</code> match your environment (<code>go run .</code>, <code>python server.py</code>, or the binary name).</p>
 
-<p>Please refer to the detailed <a href= "https://github.com/Lotargo/MCP-NG-/tree/main/docs/tools">documentation</a></li> for each tool in the <code>docs/tools</code> directory for specific configuration instructions.</p>
+<p>Please refer to the detailed <a href= "https://github.com/Lotargo/MCP-NG-/tree/main/docs/tools">documentation</a></li> for each tool in the for specific configuration instructions.</p>
 
 <h2>ReAct Workflow</h2>
 
