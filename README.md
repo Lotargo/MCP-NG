@@ -34,28 +34,34 @@
 
 <p>I have designed MCP-NG with a focus on modularity and scalability. The core of the system is the <strong>Main MCP Server</strong>, which acts as a central hub for the various tool servers. Client applications, such as chatbots or other autonomous agents, communicate with the Main MCP Server to access the available tools via either gRPC or HTTP/REST.</p>
 
-```
+```mermaid
 graph TD
-    subgraph "Client Applications"
+    subgraph "Клиентские приложения (Client Applications)"
         A[gRPC Client]
         H[HTTP/REST Client]
     end
 
-    A |gRPC Request on port 8090| B(Main MCP Server);
-    H |HTTP/REST Request on port 8002| B;
-
-    B |gRPC Proxy| C{Tool 1 Go};
-    B |gRPC Proxy| D{Tool 2 Go};
-    B |gRPC Proxy| E{Tool 3 Python};
-    B |gRPC Proxy| F[Human Bridge];
-
-    subgraph "Tool Servers"
-        C
-        D
-        E
-        F
+    subgraph "Основной сервер (Core)"
+         B(Main MCP Server)
     end
 
+    subgraph "Серверы инструментов (Tool Servers)"
+        C[Tool 1 Go]
+        D[Tool 2 Go]
+        E[Tool 3 Python]
+        F[Human Bridge]
+    end
+
+    %% Определение связей
+    A -- "gRPC Request on port 8090" --> B;
+    H -- "HTTP/REST Request on port 8002" --> B;
+
+    B -- "gRPC Proxy" --> C;
+    B -- "gRPC Proxy" --> D;
+    B -- "gRPC Proxy" --> E;
+    B -- "gRPC Proxy" --> F;
+
+    %% Стилизация
     style B fill:#f9f,stroke:#333,stroke-width:2px
 ```
 
